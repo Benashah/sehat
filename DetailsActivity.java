@@ -3,9 +3,11 @@ package com.example.demo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -13,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -24,80 +27,51 @@ import java.io.UnsupportedEncodingException;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class DetailsActivity extends AppCompatActivity {
-private RequestQueue requestQueue;
-private EditText et_name, et_job;
-private Button btn_submit;
-    private int text;
-    private String charset;
-    private String charsetName;
+    public void makeRequest(View view){
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
 
-        et_name=(EditText) findViewById(R.id.et_name);
-        et_job=(EditText) findViewById(R.id.et_job);
-        btn_submit=(Button) findViewById(R.id.btn_submit);
+        RequestQueue requestQueue=Volley.newRequestQueue(DetailsActivity.this);
+        EditText testText = (EditText) findViewById(R.id.test_id);
+        String testId = testText.getText().toString();
+        RequestQueue queue = Volley.newRequestQueue(DetailsActivity.this);
+        String url = "https://sehat.hyderdevelops.ml/tests/getOne?id=";
+        url = url.concat(testId);
+        Log.i("Url",url);
 
-        btn_submit.setOnClickListener(new View.OnClickListener() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onClick(View v) {
-                String data="{"+"\"name\""+ "\""+ et_name.getText().toString()+"\","+"\"job\"" +"\""+et_job.getText().toString()+"\""+"}";
-            Submit(data);
+            public void onResponse(JSONObject response) {
+                TextView patientUID , labName,location, testResult;
+                patientUID = findViewById(R.id.patient_uid);
+                labName = findViewById(R.id.lab_name);
+                location = findViewById(R.id.location);
+                testResult = findViewById(R.id.test_result);
 
-
-            }
-        });
-
-
-
-
-    }
-
-    private void Submit(String data) {
-        final String savedata = data;
-        String URL = "https://sehat.hyderdevelops.ml/test/getOne?id=ABC123";
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
                 try {
-                    JSONObject objres = new JSONObject(response);
-                    Toast.makeText(getApplicationContext(), objres.toString(), Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
 
+                    patientUID.setText(response.getString("PATIENT_UID"));
+                    labName.setText(response.getString("LAB_NAME"));
+                    location.setText(response.getString("LAB_LOCATION"));
+                    testResult.setText(response.getString("TEST_RESULT"));
+                }
 
-
+                catch (JSONException error){
+                    error.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), LENGTH_SHORT).show();
+                error.printStackTrace();
             }
+        });
 
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
-
-
-        };
-        requestQueue.add(stringRequest);
-    }
+        requestQueue.add(request);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
+    }
+}
