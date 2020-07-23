@@ -4,33 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="confrimOtp"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp"
     tools:context=".MainActivity">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/main-nav"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/topHeading"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="650dp"
-        app:itemBackground="@color/colorGreen"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="48dp"
+        android:text="Login Credentials"
+        android:textColor="#000000"
+        android:textSize="28sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:itemIconTint="#100E0E"
-        app:itemTextColor="#080110"
-        app:menu="@menu/nav_items">
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+    <EditText
+        android:id="@+id/phoneID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:ems="10"
+        android:hint="Enter Phone Number"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topHeading" />
 
-    <FrameLayout
-        android:id="@+id/main-frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="57dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal" />
+    <Button
+        android:id="@+id/sendOTP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:onClick="makeRequest"
+        android:text="Generate OTP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phoneID" />
+
+    <EditText
+        android:id="@+id/otp_rec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Enter OTP Recieved"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.575"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendOTP" />
+
+    <Button
+        android:id="@+id/confirm_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:onClick="confrimOtp"
+        android:text="Confirm OTP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otp_rec" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
